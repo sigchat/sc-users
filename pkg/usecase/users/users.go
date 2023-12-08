@@ -2,8 +2,8 @@ package users
 
 import (
 	"context"
-	"sc-users/pkg/domain/dto"
-	"sc-users/pkg/repository"
+	"github.com/sigchat/sc-users/pkg/domain/dto"
+	"github.com/sigchat/sc-users/pkg/repository"
 )
 
 type Interactor struct {

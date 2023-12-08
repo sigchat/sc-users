@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-	"sc-users/pkg/domain/dto"
+	"github.com/sigchat/sc-users/pkg/domain/dto"
 )
 
 type Repository interface {
