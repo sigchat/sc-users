@@ -14,6 +14,6 @@ func NewInteractor(repository repository.Repository) *Interactor {
 	return &Interactor{repository: repository}
 }
 
-func (in *Interactor) CreateUser(ctx context.Context, request dto.CreateUserRequest) error {
-
+func (in *Interactor) CreateUser(ctx context.Context, request *dto.CreateUserDTO) (id int, err error) {
+	in.repository.CreateUser(ctx)
 }

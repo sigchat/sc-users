@@ -9,6 +9,7 @@ type User struct {
 	Username   string
 	Password   []byte
 	CreatedAt  time.Time
+	ModifiedAt time.Time
 	LastOnline time.Time
 	Active     bool
 }

@@ -1,19 +1,15 @@
 package dto
 
-import (
-	"time"
-)
+import "time"
 
-type CreateUserRequest struct {
-	Username string
-	Password []byte
+type CreateUserDTO struct {
+	Username       string
+	HashedPassword []byte
 }
 
-type CreateUserResponse struct {
-	ID         int
-	Username   string
-	Password   []byte
-	CreatedAt  time.Time
-	LastOnline time.Time
-	Active     bool
+type UpdateUserDTO struct {
+	Username       string
+	HashedPassword []byte
+	LastOnline     time.Time
+	Active         bool
 }

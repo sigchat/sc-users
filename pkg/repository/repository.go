@@ -6,5 +6,5 @@ import (
 )
 
 type Repository interface {
-	CreateUser(ctx context.Context, request dto.CreateUserRequest) error
+	CreateUser(ctx context.Context, request *dto.CreateUserDTO) error
 }
