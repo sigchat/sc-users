@@ -6,6 +6,7 @@ import (
 	"github.com/sigchat/sc-users/pkg/domain/dto"
 	"github.com/sigchat/sc-users/pkg/domain/model"
 	"github.com/sigchat/sc-users/pkg/items"
+	"golang.org/x/crypto/bcrypt"
 	"sync"
 	"time"
 )
@@ -26,18 +27,23 @@ func NewRAMDBRepository() *RAMDBRepository {
 	}
 }
 
-func (r *RAMDBRepository) CreateUser(ctx context.Context, request *dto.CreateUserDTO) (id int, err error) {
+func (r *RAMDBRepository) CreateUser(ctx context.Context, request *dto.RegisterUserDTO) (id int, err error) {
 	r.m.Lock()
 	defer r.m.Unlock()
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return 0, err
+	}
 
 	newID := _userIDCNT
 	newUser := &model.User{
 		ID:            newID,
 		Username:      request.Username,
-		Password:      request.HashedPassword,
+		Password:      hashedPassword,
 		CreatedAt:     time.Now(),
 		LastUpdatedAt: time.Now(),
-		Active:        false,
+		Active:        true,
 	}
 	_userIDCNT++
 	r.items = append(r.items, newUser)
@@ -58,7 +64,7 @@ func (r *RAMDBRepository) GetUsers(ctx context.Context) ([]model.User, error) {
 	return u, nil
 }
 
-func (r *RAMDBRepository) UpdateUser(ctx context.Context, id int, data *dto.UpdateUserDTO) (modified *model.User, err error) {
+func (r *RAMDBRepository) UpdateUserByID(ctx context.Context, id int, data *dto.UpdateUserDTO) (modified *model.User, err error) {
 	r.m.Lock()
 	defer r.m.Unlock()
 
@@ -77,7 +83,7 @@ func (r *RAMDBRepository) UpdateUser(ctx context.Context, id int, data *dto.Upda
 	modified.Username = data.Username
 	modified.Password = data.HashedPassword
 	modified.LastUpdatedAt = time.Now()
-	modified.LastOnline = data.LastOnline
+	modified.LastOnline = &data.LastOnline
 	modified.Active = data.Active
 	return
 }

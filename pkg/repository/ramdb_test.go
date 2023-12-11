@@ -12,7 +12,7 @@ import (
 func TestCreateUser(t *testing.T) {
 	repo := NewRAMDBRepository()
 
-	createUserDTO := &dto.CreateUserDTO{
+	createUserDTO := &dto.RegisterUserDTO{
 		Username:       "testuser",
 		HashedPassword: []byte("hashedpassword"),
 	}
@@ -66,7 +66,7 @@ func TestUpdateUser(t *testing.T) {
 		Active:         true,
 	}
 
-	modifiedUser, err := repo.UpdateUser(context.Background(), 1, updateUserDTO)
+	modifiedUser, err := repo.UpdateUserByID(context.Background(), 1, updateUserDTO)
 
 	assert.NoError(t, err)
 	assert.NotNil(t, modifiedUser)
@@ -86,7 +86,7 @@ func TestUpdateUserNotFound(t *testing.T) {
 		Active:         true,
 	}
 
-	modifiedUser, err := repo.UpdateUser(context.Background(), 1, updateUserDTO)
+	modifiedUser, err := repo.UpdateUserByID(context.Background(), 1, updateUserDTO)
 
 	assert.Error(t, err)
 	assert.Nil(t, modifiedUser)

@@ -2,9 +2,9 @@ package dto
 
 import "time"
 
-type CreateUserDTO struct {
-	Username       string
-	HashedPassword []byte
+type RegisterUserDTO struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 type UpdateUserDTO struct {
