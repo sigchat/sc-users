@@ -32,12 +32,12 @@ func (r *RAMDBRepository) CreateUser(ctx context.Context, request *dto.CreateUse
 
 	newID := _userIDCNT
 	newUser := &model.User{
-		ID:         newID,
-		Username:   request.Username,
-		Password:   request.HashedPassword,
-		CreatedAt:  time.Now(),
-		ModifiedAt: time.Now(),
-		Active:     false,
+		ID:            newID,
+		Username:      request.Username,
+		Password:      request.HashedPassword,
+		CreatedAt:     time.Now(),
+		LastUpdatedAt: time.Now(),
+		Active:        false,
 	}
 	_userIDCNT++
 	r.items = append(r.items, newUser)
@@ -76,7 +76,7 @@ func (r *RAMDBRepository) UpdateUser(ctx context.Context, id int, data *dto.Upda
 
 	modified.Username = data.Username
 	modified.Password = data.HashedPassword
-	modified.ModifiedAt = time.Now()
+	modified.LastUpdatedAt = time.Now()
 	modified.LastOnline = data.LastOnline
 	modified.Active = data.Active
 	return
