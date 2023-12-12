@@ -1,5 +1,6 @@
 package config
 
-type Config struct {
-	Name string `env:"USERS_SERVICE_NAME" envDefault:"users"`
+type UserService struct {
+	Name    string `env:"USERS_SERVICE_NAME" envDefault:"users"`
+	BaseURL string `env:"USERS_SERVICE_BASE_URL,required"`
 }
