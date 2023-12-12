@@ -29,10 +29,19 @@ func (ctrl *Controller) GetUsers(ctx *fasthttp.RequestCtx) (interface{}, error) 
 	return ctrl.interactor.GetUsers(ctx)
 }
 
+func (ctrl *Controller) GetUserByID(ctx *fasthttp.RequestCtx) (interface{}, error) {
+	var params parameters.UserIDParams
+	if err := params.Get(ctx); err != nil {
+		return nil, err
+	}
+
+	return ctrl.interactor.GetUserByID(ctx, params.UserID)
+}
+
 func (ctrl *Controller) UpdateUserByID(ctx *fasthttp.RequestCtx) (interface{}, error) {
 	var params parameters.UserIDParams
 	if err := params.Get(ctx); err != nil {
-		return nil, fmt.Errorf("bad request: %v", err)
+		return nil, err
 	}
 
 	var userDTO dto.UpdateUserDTO

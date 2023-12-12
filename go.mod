@@ -3,7 +3,7 @@ module github.com/sigchat/sc-users
 go 1.21.1
 
 require (
-	github.com/sigchat/sc-http v0.0.2
+	github.com/sigchat/sc-http v0.0.5
 	github.com/stretchr/testify v1.8.1
 	github.com/valyala/fasthttp v1.51.0
 	golang.org/x/crypto v0.16.0
