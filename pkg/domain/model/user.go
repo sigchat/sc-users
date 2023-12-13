@@ -13,3 +13,8 @@ type User struct {
 	LastOnline    *time.Time `json:"last_online,omitempty"`
 	Active        bool       `json:"active"`
 }
+
+type Session struct {
+	ID          int    `json:"session_id"`
+	AccessToken string `json:"access_token"`
+}

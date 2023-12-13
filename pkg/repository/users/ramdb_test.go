@@ -1,4 +1,4 @@
-package repository
+package users
 
 import (
 	"context"
@@ -12,7 +12,7 @@ import (
 func TestCreateUser(t *testing.T) {
 	repo := NewRAMDBRepository()
 
-	createUserDTO := &dto.RegisterUserDTO{
+	createUserDTO := &dto.RegisterUserRequestDTO{
 		Username:       "testuser",
 		HashedPassword: []byte("hashedpassword"),
 	}

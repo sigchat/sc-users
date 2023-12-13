@@ -1,10 +1,27 @@
 package dto
 
-import "time"
+import (
+	"time"
+)
 
-type RegisterUserDTO struct {
+type RegisterUserRequestDTO struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
+}
+
+type RegisterUserResponseDTO struct {
+	UserID      int    `json:"user_id"`
+	AccessToken string `json:"access_token"`
+}
+
+type LoginUserRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type LoginUserResponse struct {
+	UserID      int    `json:"user_id"`
+	AccessToken string `json:"access_token"`
 }
 
 type UpdateUserDTO struct {

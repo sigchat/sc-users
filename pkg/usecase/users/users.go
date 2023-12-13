@@ -7,20 +7,83 @@ import (
 	"github.com/sigchat/sc-users/pkg/domain/dto"
 	"github.com/sigchat/sc-users/pkg/domain/model"
 	"github.com/sigchat/sc-users/pkg/items"
-	"github.com/sigchat/sc-users/pkg/repository"
+	"github.com/sigchat/sc-users/pkg/repository/users"
+	"github.com/sigchat/sc-users/pkg/usecase/sessions"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
 
 type Interactor struct {
-	repository repository.Repository
+	repository         users.Repository
+	sessionsInteractor *sessions.Interactor
 }
 
-func NewInteractor(repository repository.Repository) *Interactor {
-	return &Interactor{repository: repository}
+func NewInteractor(
+	repository users.Repository,
+	sessionsInteractor *sessions.Interactor,
+) *Interactor {
+	return &Interactor{
+		repository:         repository,
+		sessionsInteractor: sessionsInteractor,
+	}
 }
 
-func (in *Interactor) CreateUser(ctx context.Context, request *dto.RegisterUserDTO) (id int, err error) {
-	return in.repository.CreateUser(ctx, request)
+func (in *Interactor) RegisterUser(
+	ctx context.Context,
+	request *dto.RegisterUserRequestDTO,
+) (responseDTO *dto.RegisterUserResponseDTO, err error) {
+	createdUserID, err := in.repository.CreateUser(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+
+	session, err := in.sessionsInteractor.GetOrCreateSession(ctx, createdUserID)
+	if err != nil {
+		return nil, err
+	}
+
+	response := &dto.RegisterUserResponseDTO{
+		UserID:      createdUserID,
+		AccessToken: session.AccessToken,
+	}
+
+	return response, nil
+}
+
+func (in *Interactor) LoginUser(
+	ctx context.Context,
+	request *dto.LoginUserRequest,
+) (responseDTO *dto.LoginUserResponse, err error) {
+	usersSlice, _ := in.repository.GetUsers(ctx)
+	usersList := items.List[model.User](usersSlice)
+	usersList.Filter(func(item model.User, index int) bool {
+		return item.Username == request.Username
+	})
+
+	if len(usersList) == 0 {
+		return nil, errors.NewHttpError().
+			WithCode(http.StatusUnauthorized).
+			WithMessage(fmt.Sprintf("user with username=%s not found", request.Username))
+	}
+
+	foundUser := usersList[0]
+	if err := bcrypt.CompareHashAndPassword(foundUser.Password, []byte(request.Password)); err != nil {
+		return nil, errors.NewHttpError().
+			WithCode(http.StatusUnauthorized).
+			WithMessage(fmt.Sprintf("invalid credentials"))
+	}
+
+	session, err := in.sessionsInteractor.GetOrCreateSession(ctx, foundUser.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	response := &dto.LoginUserResponse{
+		UserID:      foundUser.ID,
+		AccessToken: session.AccessToken,
+	}
+
+	return response, nil
 }
 
 func (in *Interactor) GetUsers(ctx context.Context) ([]model.User, error) {

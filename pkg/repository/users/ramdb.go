@@ -1,4 +1,4 @@
-package repository
+package users
 
 import (
 	"context"
@@ -27,7 +27,7 @@ func NewRAMDBRepository() *RAMDBRepository {
 	}
 }
 
-func (r *RAMDBRepository) CreateUser(ctx context.Context, request *dto.RegisterUserDTO) (id int, err error) {
+func (r *RAMDBRepository) CreateUser(ctx context.Context, request *dto.RegisterUserRequestDTO) (id int, err error) {
 	r.m.Lock()
 	defer r.m.Unlock()
 
