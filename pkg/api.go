@@ -37,6 +37,7 @@ func InitAPI() {
 
 	authGroup.GET("/api/v1/users", wrapper.Data(usersV1.GetUsers))
 	authGroup.GET(fmt.Sprintf("/api/v1/users/{%s}", parameters.UserIDParam), wrapper.Data(usersV1.GetUserByID))
+	authGroup.GET("/api/v1/users/search", wrapper.Data(usersV1.SearchUsersByUsername))
 	noAuthGroup.POST("/api/v1/register", wrapper.Data(usersV1.RegisterUser))
 	noAuthGroup.POST("/api/v1/login", wrapper.Data(usersV1.LoginUser))
 

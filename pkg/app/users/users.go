@@ -3,6 +3,7 @@ package users
 import (
 	"encoding/json"
 	"github.com/sigchat/sc-http/pkg/transport/errors"
+	"github.com/sigchat/sc-http/pkg/transport/server/auth"
 	"github.com/sigchat/sc-users/pkg/domain/dto"
 	"github.com/sigchat/sc-users/pkg/parameters"
 	"github.com/sigchat/sc-users/pkg/usecase/users"
@@ -12,10 +13,14 @@ import (
 
 type Controller struct {
 	interactor *users.Interactor
+	session    *auth.Session
 }
 
 func NewController(usersInteractor *users.Interactor) *Controller {
-	return &Controller{interactor: usersInteractor}
+	return &Controller{
+		interactor: usersInteractor,
+		session:    &auth.Session{},
+	}
 }
 
 func (ctrl *Controller) RegisterUser(ctx *fasthttp.RequestCtx) (interface{}, error) {
@@ -44,6 +49,17 @@ func (ctrl *Controller) GetUserByID(ctx *fasthttp.RequestCtx) (interface{}, erro
 		return nil, err
 	}
 	return ctrl.interactor.GetUserByID(ctx, params.UserID)
+}
+
+func (ctrl *Controller) SearchUsersByUsername(ctx *fasthttp.RequestCtx) (any, error) {
+	var params parameters.SearchQueryParams
+	if err := params.Get(ctx); err != nil {
+		return nil, errors.NewHttpError().
+			WithCode(http.StatusBadRequest).
+			WithMessage(err.Error())
+	}
+
+	return ctrl.interactor.GetUsersLikeUsername(ctx, params.Query, ctrl.session.GetCurrentUser(ctx))
 }
 
 func (ctrl *Controller) UpdateUserByID(ctx *fasthttp.RequestCtx) (interface{}, error) {

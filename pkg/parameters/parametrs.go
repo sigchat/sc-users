@@ -4,12 +4,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/sigchat/sc-http/pkg/transport/errors"
+	"github.com/valyala/fasthttp"
 	"net/http"
 	"strconv"
 )
 
 const (
-	UserIDParam = "userID"
+	UserIDParam      = "userID"
+	SearchQueryParam = "q"
 )
 
 type UserIDParams struct {
@@ -35,5 +37,17 @@ func (q *UserIDParams) Get(ctx context.Context) error {
 	}
 	q.UserID = userID
 
+	return nil
+}
+
+type SearchQueryParams struct {
+	Query string
+}
+
+func (p *SearchQueryParams) Get(ctx *fasthttp.RequestCtx) error {
+	if !ctx.QueryArgs().Has(SearchQueryParam) {
+		return fmt.Errorf("query param %s not found", SearchQueryParam)
+	}
+	p.Query = string(ctx.QueryArgs().Peek(SearchQueryParam))
 	return nil
 }

@@ -3,18 +3,22 @@ package users
 import (
 	"context"
 	"fmt"
+	"github.com/sigchat/sc-http/pkg/domain/tokens"
 	"github.com/sigchat/sc-http/pkg/transport/errors"
 	"github.com/sigchat/sc-users/pkg/domain/dto"
 	"github.com/sigchat/sc-users/pkg/domain/model"
+	"github.com/sigchat/sc-users/pkg/domain/presenter"
 	"github.com/sigchat/sc-users/pkg/items"
 	"github.com/sigchat/sc-users/pkg/repository/users"
 	"github.com/sigchat/sc-users/pkg/usecase/sessions"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
+	"strings"
 )
 
 type Interactor struct {
 	repository         users.Repository
+	userPresenter      *presenter.UserPresenter
 	sessionsInteractor *sessions.Interactor
 }
 
@@ -23,6 +27,7 @@ func NewInteractor(
 	sessionsInteractor *sessions.Interactor,
 ) *Interactor {
 	return &Interactor{
+		userPresenter:      presenter.NewUserPresenter(),
 		repository:         repository,
 		sessionsInteractor: sessionsInteractor,
 	}
@@ -106,6 +111,19 @@ func (in *Interactor) GetUserByID(ctx context.Context, id int) (*model.User, err
 	}
 
 	return &users[0], nil
+}
+
+func (in *Interactor) GetUsersLikeUsername(ctx context.Context, likeUsername string, curUser *tokens.CurrentUser) ([]model.User, error) {
+	usersSlice, _ := in.repository.GetUsers(ctx)
+	usersList := items.List[model.User](usersSlice)
+	usersList = usersList.Filter(func(item model.User, index int) bool {
+		if item.ID == curUser.UserID {
+			return false
+		}
+		return strings.Contains(item.Username, likeUsername)
+	})
+
+	return in.userPresenter.UserSearchResponse(usersList.Slice()), nil
 }
 
 func (in *Interactor) UpdateUserByID(ctx context.Context, id int, data *dto.UpdateUserDTO) (modified *model.User, err error) {

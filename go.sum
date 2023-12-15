@@ -32,6 +32,12 @@ github.com/savsgio/gotils v0.0.0-20230208104028-c358bd845dee h1:8Iv5m6xEo1NR1Avp
 github.com/savsgio/gotils v0.0.0-20230208104028-c358bd845dee/go.mod h1:qwtSXrKuJh/zsFQ12yEE89xfCrGKK63Rr7ctU/uCo4g=
 github.com/sigchat/sc-http v0.0.8 h1:QRzhu8/g7DTLDeNt+kJZnREVKgaFXhqT8+zR9VkMcyE=
 github.com/sigchat/sc-http v0.0.8/go.mod h1:gaaSlzQhacyscjTjU87bzQtMH0hS5EY4rn/qWEbcFe4=
+github.com/sigchat/sc-http v0.0.9 h1:tGsEt1Pmew1iUAFBsWOcIRnljUPB002vb6sdWwB+fTs=
+github.com/sigchat/sc-http v0.0.9/go.mod h1:gaaSlzQhacyscjTjU87bzQtMH0hS5EY4rn/qWEbcFe4=
+github.com/sigchat/sc-http v0.0.10 h1:phfukgK55QWDgpsEUqcCV8bkvyqmfMHhz2jf5TVUt/g=
+github.com/sigchat/sc-http v0.0.10/go.mod h1:gaaSlzQhacyscjTjU87bzQtMH0hS5EY4rn/qWEbcFe4=
+github.com/sigchat/sc-http v0.0.11 h1:3pGIE0xKw63QlTQdlULdUa5E+F+mlRpXZZvuem4qXoM=
+github.com/sigchat/sc-http v0.0.11/go.mod h1:gaaSlzQhacyscjTjU87bzQtMH0hS5EY4rn/qWEbcFe4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
 github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=

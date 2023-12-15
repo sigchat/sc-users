@@ -4,17 +4,28 @@ import (
 	"time"
 )
 
+type Status string
+
+const (
+	StatusOnline  Status = "online"
+	StatusOffline Status = "offline"
+	StatusDND     Status = "dnd"
+	StatusAFK     Status = "afk"
+)
+
 type User struct {
 	ID            int        `json:"id"`
 	Username      string     `json:"username"`
 	Password      []byte     `json:"-"`
-	CreatedAt     time.Time  `json:"created_at"`
-	LastUpdatedAt time.Time  `json:"last_updated_at"`
-	LastOnline    *time.Time `json:"last_online,omitempty"`
+	CreatedAt     time.Time  `json:"createdAt"`
+	LastUpdatedAt time.Time  `json:"lastUpdatedAt"`
+	LastOnline    *time.Time `json:"lastOnline,omitempty"`
+	Friends       []*User    `json:"-"`
+	Status        Status     `json:"status"`
 	Active        bool       `json:"active"`
 }
 
 type Session struct {
-	ID          int    `json:"session_id"`
-	AccessToken string `json:"access_token"`
+	ID          int    `json:"sessionID"`
+	AccessToken string `json:"accessToken"`
 }

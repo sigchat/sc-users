@@ -43,6 +43,8 @@ func (r *RAMDBRepository) CreateUser(ctx context.Context, request *dto.RegisterU
 		Password:      hashedPassword,
 		CreatedAt:     time.Now(),
 		LastUpdatedAt: time.Now(),
+		Friends:       make([]*model.User, 0),
+		Status:        model.StatusOffline,
 		Active:        true,
 	}
 	_userIDCNT++
