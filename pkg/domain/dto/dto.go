@@ -34,8 +34,9 @@ type UpdateUserDTO struct {
 type UserInfoDTO struct {
 	ID            int        `json:"id"`
 	Username      string     `json:"username"`
-	CreatedAt     time.Time  `json:"created_at"`
-	LastUpdatedAt time.Time  `json:"last_updated_at"`
-	LastOnline    *time.Time `json:"last_online,omitempty"`
+	CreatedAt     time.Time  `json:"createdAt"`
+	LastUpdatedAt time.Time  `json:"lastUpdatedAt"`
+	LastOnline    *time.Time `json:"lastOnline,omitempty"`
+	Status        string     `json:"status"`
 	Active        bool       `json:"active"`
 }

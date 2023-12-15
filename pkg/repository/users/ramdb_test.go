@@ -13,8 +13,8 @@ func TestCreateUser(t *testing.T) {
 	repo := NewRAMDBRepository()
 
 	createUserDTO := &dto.RegisterUserRequestDTO{
-		Username:       "testuser",
-		HashedPassword: []byte("hashedpassword"),
+		Username: "testuser",
+		Password: "hashedpassword",
 	}
 
 	id, err := repo.CreateUser(context.Background(), createUserDTO)
@@ -26,7 +26,7 @@ func TestCreateUser(t *testing.T) {
 	user := repo.items[0]
 	assert.Equal(t, id, user.ID)
 	assert.Equal(t, createUserDTO.Username, user.Username)
-	assert.Equal(t, createUserDTO.HashedPassword, user.Password)
+	assert.Equal(t, createUserDTO.Password, user.Password)
 	assert.False(t, user.Active)
 }
 
@@ -49,7 +49,7 @@ func TestGetUsers(t *testing.T) {
 	user := users[0]
 	assert.Equal(t, 1, user.ID)
 	assert.Equal(t, "testuser", user.Username)
-	assert.Equal(t, []byte("hashedpassword"), user.Password)
+	assert.Equal(t, "hashedpassword", user.Password)
 	assert.False(t, user.Active)
 }
 
