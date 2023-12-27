@@ -12,6 +12,7 @@ import (
 	"github.com/sigchat/sc-users/pkg/repository/users"
 	"github.com/sigchat/sc-users/pkg/usecase/sessions"
 	"golang.org/x/crypto/bcrypt"
+	"log/slog"
 	"net/http"
 	"strings"
 )
@@ -37,6 +38,13 @@ func (in *Interactor) RegisterUser(
 	ctx context.Context,
 	request *dto.RegisterUserRequestDTO,
 ) (responseDTO *dto.RegisterUserResponseDTO, err error) {
+	if exists := in.UserWithUsernameExists(ctx, request.Username); exists {
+		slog.Warn(fmt.Sprintf("get user with username: user with username=%s already exists", request.Username))
+		return nil, errors.NewHttpError().
+			WithCode(http.StatusConflict).
+			WithMessage(fmt.Sprintf("user with username=%s already exists", request.Username))
+	}
+
 	createdUserID, err := in.repository.CreateUser(ctx, request)
 	if err != nil {
 		return nil, err
@@ -61,7 +69,7 @@ func (in *Interactor) LoginUser(
 ) (responseDTO *dto.LoginUserResponse, err error) {
 	usersSlice, _ := in.repository.GetUsers(ctx)
 	usersList := items.List[model.User](usersSlice)
-	usersList.Filter(func(item model.User, index int) bool {
+	usersList = usersList.Filter(func(item model.User, index int) bool {
 		return item.Username == request.Username
 	})
 
@@ -111,6 +119,20 @@ func (in *Interactor) GetUserByID(ctx context.Context, id int) (*model.User, err
 	}
 
 	return &users[0], nil
+}
+
+func (in *Interactor) UserWithUsernameExists(ctx context.Context, username string) bool {
+	usersSlice, _ := in.repository.GetUsers(ctx)
+	usersList := items.List[model.User](usersSlice)
+	usersList = usersList.Filter(func(item model.User, index int) bool {
+		return item.Username == username
+	})
+
+	if len(usersList) > 0 {
+		return true
+	}
+
+	return false
 }
 
 func (in *Interactor) GetUsersLikeUsername(ctx context.Context, likeUsername string, curUser *tokens.CurrentUser) ([]model.User, error) {

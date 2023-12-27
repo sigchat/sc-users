@@ -59,7 +59,13 @@ func (ctrl *Controller) SearchUsersByUsername(ctx *fasthttp.RequestCtx) (any, er
 			WithMessage(err.Error())
 	}
 
-	return ctrl.interactor.GetUsersLikeUsername(ctx, params.Query, ctrl.session.GetCurrentUser(ctx))
+	user, err := ctrl.session.GetCurrentUser(ctx)
+	if err != nil {
+		return nil, errors.NewHttpError().
+			WithCode(http.StatusBadRequest).
+			WithMessage(err.Error())
+	}
+	return ctrl.interactor.GetUsersLikeUsername(ctx, params.Query, user)
 }
 
 func (ctrl *Controller) UpdateUserByID(ctx *fasthttp.RequestCtx) (interface{}, error) {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/sigchat/sc-users/pkg/domain/model"
 	"github.com/sigchat/sc-users/pkg/repository/sessions"
+	"time"
 )
 
 type Interactor struct {
@@ -16,7 +17,9 @@ func NewInteractor(repository sessions.Repository) *Interactor {
 
 func (in *Interactor) GetOrCreateSession(ctx context.Context, userID int) (*model.Session, error) {
 	if existingSession, err := in.repository.GetSessionByUserID(ctx, userID); err == nil {
-		return existingSession, nil
+		if !existingSession.ExpiresAt.Before(time.Now()) {
+			return existingSession, nil
+		}
 	}
 
 	return in.repository.CreateSession(ctx, userID)

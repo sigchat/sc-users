@@ -70,6 +70,7 @@ func (db *RAMDBRepository) CreateSession(ctx context.Context, userID int) (*mode
 	newSession := &model.Session{
 		ID:          currentID,
 		AccessToken: signedToken,
+		ExpiresAt:   expiresAt,
 	}
 
 	_sessionsIDCnt++

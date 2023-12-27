@@ -1,11 +1,13 @@
 package pkg
 
 import (
+	"context"
 	"fmt"
 	"github.com/sigchat/sc-http/pkg/transport/controllerwrapper"
 	"github.com/sigchat/sc-http/pkg/transport/server"
 	usersV1 "github.com/sigchat/sc-users/pkg/app/users"
 	"github.com/sigchat/sc-users/pkg/config"
+	"github.com/sigchat/sc-users/pkg/domain/dto"
 	"github.com/sigchat/sc-users/pkg/parameters"
 	sessionsRepository "github.com/sigchat/sc-users/pkg/repository/sessions"
 	usersRepository "github.com/sigchat/sc-users/pkg/repository/users"
@@ -30,6 +32,23 @@ func InitAPI() {
 		usersRepository,
 		sessionsInteractor,
 	)
+
+	{
+		// Тестовые пользователи
+		usersInteractor.RegisterUser(context.Background(), &dto.RegisterUserRequestDTO{
+			Username: "user1",
+			Password: "user1",
+		})
+		usersInteractor.RegisterUser(context.Background(), &dto.RegisterUserRequestDTO{
+			Username: "user2",
+			Password: "user2",
+		})
+		usersInteractor.RegisterUser(context.Background(), &dto.RegisterUserRequestDTO{
+			Username: "user3",
+			Password: "user3",
+		})
+
+	}
 
 	usersV1 := usersV1.NewController(usersInteractor)
 

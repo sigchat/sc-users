@@ -32,6 +32,8 @@ github.com/savsgio/gotils v0.0.0-20230208104028-c358bd845dee h1:8Iv5m6xEo1NR1Avp
 github.com/savsgio/gotils v0.0.0-20230208104028-c358bd845dee/go.mod h1:qwtSXrKuJh/zsFQ12yEE89xfCrGKK63Rr7ctU/uCo4g=
 github.com/sigchat/sc-http v0.0.12 h1:q2pyw9bTDXgrCWiBnDXyB42E1kk968pII7evbS/J2JI=
 github.com/sigchat/sc-http v0.0.12/go.mod h1:gaaSlzQhacyscjTjU87bzQtMH0hS5EY4rn/qWEbcFe4=
+github.com/sigchat/sc-http v0.0.14 h1:IA8pVvv5hjY5BjijCdduAiKuseI5yLmCoHULg4PSAc8=
+github.com/sigchat/sc-http v0.0.14/go.mod h1:gaaSlzQhacyscjTjU87bzQtMH0hS5EY4rn/qWEbcFe4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
 github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=

@@ -4,6 +4,13 @@ import (
 	"time"
 )
 
+type Role string
+
+const (
+	RoleUser  Role = "user"
+	RoleAdmin Role = "admin"
+)
+
 type Status string
 
 const (
@@ -22,10 +29,12 @@ type User struct {
 	LastOnline    *time.Time `json:"lastOnline,omitempty"`
 	Friends       []*User    `json:"-"`
 	Status        Status     `json:"status"`
+	Role          Role       `json:"role"`
 	Active        bool       `json:"active"`
 }
 
 type Session struct {
-	ID          int    `json:"sessionID"`
-	AccessToken string `json:"accessToken"`
+	ID          int       `json:"sessionID"`
+	AccessToken string    `json:"accessToken"`
+	ExpiresAt   time.Time `json:"-"`
 }
